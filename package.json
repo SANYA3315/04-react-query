@@ -9,7 +9,17 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/react": "^19.2.9",
+    "@types/react-dom": "^19.2.3",
+    "@types/react-paginate": "^7.1.4",
     "typescript": "~5.9.3",
     "vite": "^7.2.4"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.90.20",
+    "all": "^0.0.0",
+    "axios": "^1.13.3",
+    "modern-normalize": "^3.0.1",
+    "react-paginate": "^8.3.0"
   }
 }
