@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import ReactPaginate from "react-paginate";
 import { Toaster, toast } from "react-hot-toast";
@@ -15,11 +15,17 @@ import { Movie } from "../../types/movie";
 import css from "./App.module.css";
 
 export default function App() {
-  const [query, setQuery] = useState("");
-  const [page, setPage] = useState(1);
+  const [query, setQuery] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
-  const { data, isLoading, isError, isSuccess, isFetching } = useQuery({
+  const {
+    data,
+    isLoading,
+    isError,
+    isSuccess,
+    isFetching,
+  } = useQuery({
     queryKey: ["movies", query, page],
     queryFn: () => fetchMovies(query, page),
     enabled: query !== "",
@@ -42,9 +48,11 @@ export default function App() {
     setSelectedMovie(null);
   };
 
-  if (isSuccess && movies.length === 0) {
-    toast.error("Фільми не знайдено 😢");
-  }
+  useEffect(() => {
+    if (isSuccess && movies.length === 0) {
+      toast.error("Фільми не знайдено");
+    }
+  }, [isSuccess, movies.length]);
 
   return (
     <div className={css.app}>
@@ -60,12 +68,14 @@ export default function App() {
       {totalPages > 1 && (
         <ReactPaginate
           pageCount={totalPages}
+          pageRangeDisplayed={5}
+          marginPagesDisplayed={1}
           onPageChange={({ selected }) => setPage(selected + 1)}
           forcePage={page - 1}
           containerClassName={css.pagination}
           activeClassName={css.active}
-          nextLabel="→"
           previousLabel="←"
+          nextLabel="→"
         />
       )}
 

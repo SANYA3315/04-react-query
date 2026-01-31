@@ -6,23 +6,19 @@ interface SearchBarProps {
 }
 
 export default function SearchBar({ onSubmit }: SearchBarProps) {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const formData = new FormData(e.currentTarget);
+  const handleAction = (formData: FormData) => {
     const query = formData.get("query") as string;
 
-    if (!query.trim()) {
+    if (!query || !query.trim()) {
       toast.error("Введіть назву фільму!");
       return;
     }
 
     onSubmit(query);
-    e.currentTarget.reset();
   };
 
   return (
-    <form onSubmit={handleSubmit} className={css.form}>
+    <form action={handleAction} className={css.form}>
       <input
         type="text"
         name="query"
